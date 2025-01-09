@@ -83,7 +83,40 @@ ROS is an open-source framework for developing robotic applications. In our appl
 
 Homepage: https://wiki.ros.org/noetic
 
-## Our Autonomous Driving Simulation
+## Autonomous Driving Simulation & Computational Load
+We've expanded a simulation example of Carla Simulator into a multi-processor time-triggering system. In this example, only the autonomous driving functionality based on the data from the simulation environment is implemented. We want to add a variety of sensors to make the whole system more realistic. Therefore, we refer to the sensor configuration of the Tesla Model 3 (https://www.eetimes.com/a-tesla-model-3-tear-down-after-a-hardware-retrofit/). Since we don't have access to the functional modules of the software part, we can only design them ourselves based on the web descriptions and our understanding. However, AD simulation isn't our main job. Our main goal is to build an AD simulation based on a multi-processor time-triggered system to obtain event logs. The message dependency diagram of the AD simulation application we designed is as follows:
+
+![Message Dependence Diagram](images/msg_dependence.png)
+
+This AD simulation consists of 21 tasks and 32 events. We refer to the design of Tesla Model 3 and the hardware situation of our server to configure the number of CPU cores, a total of 14 cores. There are three independent computing units, and the number of CPU cores in each unit is different. Moreover, the tasks assigned to each unit cannot be executed in other units. In order to get as close to the real situation as possible, we added a "computational load" (actually a "sleep" function) to each task to consume time.
+
+There are 4 sensor data collection tasks: "GNSS & IMU Data Collection", "Ultrasonic Sensor Data Collect", "Radar Data Collection", and "Camera Video Collection" tasks. These sensor data can be obtained directly from Carla Simulator's APIs. However, in practice, this sensor data takes time to acquire. Therefore, we configured the basic computational load for each sensor task. Since 
+some "sensors" have a long sampling period, their sensor data can be accessed every several scheduling cycles. We configured periodic computational loads for the "GNSS & IMU Data Collection" and "Camera Video Collection" tasks so that the execution time of these two tasks varies periodically. Moreover, their sensor data are only available periodically. The periods of these two tasks are 5 seconds and 10 seconds, respectively. We also take into account the loss of sensor data. Every sensor task has a certain probability, albeit low, of losing data.
+
+There are 3 actuator tasks: "Throttle & Steering Driver Control", "Break Actuator Control", and "Dash Panel Display". They only have the underlying computational load.
+
+这里有3个执行器任务："Throttle & Steering Driver Control", "Break Actuator Control", and "Dash Panel Display"。它们只有基础的计算负载。
+
+剩余的14个任务为逻辑计算任务。它们负责不同的功能模块的实现。但是实现每一个功能模块对于我们来说是不现实的，而且也并非我们原有的目的。例如“Vehicle Detection”任务是负责通过融合radar, ultrasonic, and camera的数据来识别和分类周围的车辆并且估计出它们的位置。这需要多个机器学习算法和深度学习模型的配合才能实现。而这需要花费大量的时间和资源来设计和训练，这样的任务有很多个。幸运的是我们可以直接通过仿真环境提供的APIs直接获取所有车辆的信息。因此我们的想法是：我们不需要真正实现这些模块的功能，而是尽可能还原这些模块的输入输出流并且让计算时间看起来合理即可。比如“Vehicle Detection”任务的实现如下：我们通过APIs获取所有车辆的位置，然后计算出它们与我们控制的车辆的距离。如果这个距离在我们设定的测范围内，那么这些车辆的信息将作为这个任务的输出。虽然该任务的输出和这些输入数据没有关系。但是它们的会影响任务的执行时间。由于传感器的数据并不是在每个调度周期内都可以获取的，例如周期性和干扰，因此旧的数据可能会沿用多个周期。如果没有获取新的数据，那么我们假设需要额外的时间来基于旧数据估计出当前时间点的数据从而提高输出的准确性。其他的逻辑计算任务也会基于当前输入对计算时间做出调整。而这些调整有时是线性的，有时是非线性的。
+
+## Local Context & Global Context
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
