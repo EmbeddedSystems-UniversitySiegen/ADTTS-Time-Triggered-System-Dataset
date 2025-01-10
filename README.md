@@ -100,16 +100,20 @@ The remaining 14 tasks are logical computing tasks. They are responsible for the
 ## Time System
 Carla Simulator is developed using the Unreal Game Engine. Although Carla Simulator presents realistic 3D renderings, the simulation process is not real-time. Since the 3D rendering time is affected by a variety of factors, such as the number of objects in the picture and the complexity, the corresponding real-world rendering time is variable. Therefore, we separated the scheduling system from the simulation process and designed a separate time system for them. Carla Simulator provides an API that allows the simulator to perform a simulation for a specified simulating time period. Thanks to this API, we can separate them. The two systems are executed alternately, as shown in the following diagram:
 
-![Time System Diagram](images/time_system.png)
+<p align="center">
+<img src="images/time_system.png" alt="Time System Diagram" width="600"/>
+</p>
 
 After initializing the simulation environment and scheduling system parameters, the scheduling system begins to execute the first scheduling cycle. Some parameters of the simulation environment are dynamically configured during this process, rather than just task execution (so the data for the first scheduling cycle of the event log needs to be discarded). When all tasks are completed, the task clock will be paused. Then start the rendering of the first simulation tick. We set each tick to 20ms simulation time. The simulation clock automatically starts timekeeping. When the simulation ends, the simulation clock is automatically paused. Finally, each task sends its own event list to the master node to generate an event log. This will be detailed in the next section. This is the end of the first scheduling cycle. The next scheduling cycle will then be triggered by the scheduler, and the task clock will resume. When all tasks are executed, the task clock will pause again. This process can be simply described as the alternation of the scheduling system and the simulation system. These two clocks also alternate until the vehicle we control reaches the destination or reaches the maximum execution time. When the simulation application starts, the PC clock starts to count until the whole simulation is completed. It is not affected by simulation systems and scheduling systems. Each event will contain information from these 3 clocks. I've taken a screenshot of the event log and presented the time data in the graph below.
 
-![Time System Results Diagram](images/time_system_results.png)
+<p align="center">
+<img src="images/time_system_results.png" alt="Time System Results Diagram" width="600"/>
+</p>
 
-The task clock is synchronized with the PC clock, but only when the scheduling system is running. As you can see from the diagram above, the relationship between the task clock and the PC clock is a straight line. The simulation clock is not directly related to the PC clock, but is controlled by the simulation environment. We set the simulation time of a tick to 20ms, so it takes very little time to render. From this graph, you can see that the task clock and the simulation clock are counted alternately. At the end of each scheduling cycle, there is a period of time when both clocks stop counting, where the local event lists are transmitted to the masker node.
+The task clock is synchronized with the PC clock, but only when the scheduling system is running. As you can see from the diagram above, the relationship between the task clock and the PC clock is a straight line. The simulation clock is not directly related to the PC clock but is controlled by the simulation environment. We set the simulation time of a tick to 20ms, so it takes very little time to render. From this graph, you can see that the task clock and the simulation clock are counted alternately. At the end of each scheduling cycle, there is a period of time when both clocks stop counting, where the local event lists are transmitted to the masker node.
 
 ## Local Context & Global Context
-
+to be update.
 
 
 
