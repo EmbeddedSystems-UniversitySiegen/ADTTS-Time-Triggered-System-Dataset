@@ -113,7 +113,7 @@ After initializing the simulation environment and scheduling system parameters, 
 The task clock is synchronized with the PC clock, but only when the scheduling system is running. As you can see from the diagram above, the relationship between the task clock and the PC clock is a straight line. The simulation clock is not directly related to the PC clock but is controlled by the simulation environment. We set the simulation time of a tick to 20ms, so it takes very little time to render. From this graph, you can see that the task clock and the simulation clock are counted alternately. At the end of each scheduling cycle, there is a period of time when both clocks stop counting, where the local event lists are transmitted to the masker node.
 
 ## Local Context & Global Context
-to be updated.
+to be updated...
 
 
 
