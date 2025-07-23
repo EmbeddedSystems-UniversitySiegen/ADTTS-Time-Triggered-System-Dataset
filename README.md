@@ -116,7 +116,21 @@ The task clock is synchronized with the PC clock, but only when the scheduling s
 to be updated...
 
 
+## Citation and Reference
+If you find AD-TTS useful, please cite the paper:
 
+```
+@INPROCEEDINGS{11049265,
+  author={Li, Dongchen and Onwuchekwa, Daniel and Obermaisser, Roman},
+  booktitle={2025 14th Mediterranean Conference on Embedded Computing (MECO)}, 
+  title={Event and Slack Time Prediction With Deep Learning for Proactive Runtime Scheduling in Time-Triggered Systems}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-8},
+  keywords={Deep learning;Resistance;Schedules;Runtime;Processor scheduling;Computational modeling;Stability criteria;Noise;Predictive models;Multitasking;event sequence prediction;slack time prediction;multi-task learning;deep learning;time-triggered scheduling system},
+  doi={10.1109/MECO66322.2025.11049265}}
+```
 
 
 
