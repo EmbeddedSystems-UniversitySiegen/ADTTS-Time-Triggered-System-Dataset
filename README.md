@@ -84,7 +84,7 @@ ROS is an open-source framework for developing robotic applications. In our appl
 Homepage: https://wiki.ros.org/noetic
 
 ## Autonomous Driving Simulation & Computational Load
-We've expanded a simulation example of Carla Simulator into a multi-processor time-triggering system. In this example, only the autonomous driving functionality based on the data from the simulation environment is implemented. We want to add a variety of sensors to make the whole system more realistic. Therefore, we refer to the tear-down report of the Tesla Model 3 (https://www.eetimes.com/a-tesla-model-3-tear-down-after-a-hardware-retrofit/). Since we don't have access to the functional modules of the software part, we can only design them ourselves based on the web descriptions and our understanding. However, AD simulation isn't our main job. Our main goal is to build an AD simulation based on a multi-processor time-triggered system to obtain event logs. The message dependency diagram of the AD simulation application we designed is as follows:
+We've expanded a simulation example of Carla Simulator into a multi-processor time-triggering system. In this example, only the autonomous driving functionality based on the data from the simulation environment is implemented. We want to add a variety of sensors to make the whole system more realistic. Therefore, we refer to the teardown report of the Tesla Model 3 (https://www.eetimes.com/a-tesla-model-3-tear-down-after-a-hardware-retrofit/). Since we don't have access to the functional modules of the software part, we can only design them ourselves based on the web descriptions and our understanding. However, AD simulation isn't our main job. Our main goal is to build an AD simulation based on a multi-processor time-triggered system to obtain event logs. The message dependency diagram of the AD simulation application we designed is as follows:
 
 ![Message Dependence Diagram](images/msg_dependence.png)
 
@@ -110,12 +110,17 @@ After initializing the simulation environment and scheduling system parameters, 
 <img src="images/time_system_results.png" alt="Time System Results Diagram" width="600"/>
 </p>
 
-The task clock is synchronized with the PC clock, but only when the scheduling system is running. As you can see from the diagram above, the relationship between the task clock and the PC clock is a straight line. The simulation clock is not directly related to the PC clock but is controlled by the simulation environment. We set the simulation time of a tick to 20ms, so it takes very little time to render. From this graph, you can see that the task clock and the simulation clock are counted alternately. At the end of each scheduling cycle, there is a period of time when both clocks stop counting, where the local event lists are transmitted to the masker node.
+The task clock is synchronized with the PC clock, but only when the scheduling system is running. As you can see from the diagram above, the relationship between the task clock and the PC clock is a straight line. The simulation clock is not directly related to the PC clock but is controlled by the simulation environment. We set the simulation time of a tick to 20ms, so it takes very little time to render. From this graph, you can see that the task clock and the simulation clock are counted alternately. At the end of each scheduling cycle, there is a period of time when both clocks stop counting, during which the local event lists are transmitted to the masker node.
 
 ## Local Context & Global Context
+
+Each task has an event monitoring module designed to collect event data. To facilitate the development of future event prediction models, relevant data is recorded every time an event is triggered, forming an event vector $$V_e$$.
+
+$$V_e=(C, t_{pc}, t_{sim}, t_{task}, U_{cpu}, U_{memory}, I_{core}, T, E, A)$$
+
+Where $$C$$ is the cycle ID, three timestamps $$t_{pc}$$, $$t_{sim}$$, and $$t_{task}$$ are collected from the computer clock (global clock), simulator clock, and task clock.
+
 to be updated...
-每个任务中都有一个事件监视模块，用于收集事件数据。为了方便未来事件预测模型的开发，在每个事件触发时相关的数据都被记录了下来，构成了一个事件向量。
-$$V_e=<C, t_{pc}>$$
 
 ## Citation and Reference
 If you find AD-TTS useful, please cite the paper:
