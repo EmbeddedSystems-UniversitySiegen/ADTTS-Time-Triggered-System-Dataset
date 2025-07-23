@@ -118,7 +118,7 @@ Each task has an event monitoring module designed to collect event data. To faci
 
 $$V_e=(C, t_{pc}, t_{sim}, t_{task}, U_{cpu}, U_{memory}, I_{core}, T, E, A)$$
 
-Where $$C$$ is the cycle ID, three timestamps $$t_{pc}$$, $$t_{sim}$$, and $$t_{task}$$ are collected from the computer clock (global clock), simulator clock, and task clock.
+Where $$C$$ is the cycle ID. Three timestamps $$t_{pc}$$, $$t_{sim}$$, and $$t_{task}$$ are collected from the computer clock (global clock), simulator clock, and task clock. The CPU utility $$U_{cpu}$$ in percentage, CPU core ID $$I_{core}$$ and memory usage $$U_{memory}$$ in MB represent a task running status. Event ID $$E$$ and the corresponding task ID $$T$$ are represented in one-hot encoding. Finally, $$A$$ is an event attribute list containing all event attributes, but only the attributes corresponding to the event ID have valid values, while the rests are set to zero. This data format takes up a lot of storage space, especially for one-hot encoding and event attribute lists. The reason is to restore as closely as possible the time-triggered scheduling system described in the paper ATMA (Adaptive time-triggered multi-core architecture), where event collection is implemented through a ring buffer. This design has a very high space utilization in hardware systems.
 
 to be updated...
 
