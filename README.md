@@ -122,6 +122,45 @@ Where $$C$$ is the cycle ID. Three timestamps $$t_{pc}$$, $$t_{sim}$$, and $$t_{
 
 to be updated...
 
+## Duplicate Event vs Unique Event
+In the simulation, a total of 32 event types are defined. Among them, 25 events are related to environmental inputs and system state changes. These events may trigger the adaptive time-triggered system to switch schedules, to which your models should give more attention. The remaining 9 events appear duplicately in every scheduling cycle and are independent of environmental inputs. In the following, we introduce these events and the corresponding information in detail. It should be noted that most events and their attributes occur only once within a single scheduling cycle, except for "event_task_start" and "event_task_end", which are triggered for every task. Consequently, their associated attributes appear multiple times. To reduce memory consumption during model training, the event attributes within a single scheduling cycle are merged into one attribute list in the Attribute sub-dataset. Duplicate attributes, namely "start_time", "execution_time", and "slack_time_percentage", are disambiguated by using the task name as a prefix, resulting in 21 unique instances of each of these attributes.
+
+| ID | Event Name                      | Duplicate | Description |
+|----|---------------------------------|-----------|-------------|
+| 0  | event_task_start                | yes       | It is triggered at the beginning of each task. This event includes the attribute "start_time", which denotes the task’s start time in seconds [s].|
+| 1  | event_task_end                  | yes       | It is triggered at the completion of each task. This event contains two attributes: "execution_time" indicates the duration of the task execution within the current scheduling cycle in seconds [s]; and "slack_time_percentage" represents the percentage of remaining time (slack time) available for the task in percentage [%], which is calculated as $$(t_{wcet}-t_{exe})/t_{wcet}$$. |
+| 2  | event_gnss                      | **no**    | It is triggered upon the successful acquisition of GNSS sensor data. This event includes two attributes: "longitude" and "latitude". It should be noted that the GNSS sensor is configured with a controllable data loss probability of 0.3%.  |
+| 3  | event_imu                       | **no**    | It is triggered upon the successful acquisition of IMU sensor data. This event contains 7 attributes: three-axis accelerations ("acc_x", "acc_y", and "acc_z"), three-axis angular velocities ("gyro_x", "gyro_y", and "gyro_z"), and the orientation angle estimated from the magnetometer, "compass". It should be noted that the IMU sensor is configured with a controllable data loss probability of 0.1%. |
+| 4  | event_ultrasonic                | **no**    | |
+| 5  | event_radar                     | **no**    | |
+| 6  | event_camera                    | **no**    | |
+| 7  | event_self_localization         | **no**    | |
+| 8  | event_gnss_is_none              | **no**    | |
+| 9  | event_red_traffic_light         | **no**    | |
+| 10 | event_traffic_sign              | **no**    | |
+| 11 | event_global_path               | **no**    | |
+| 12 | event_vehicle_detection         | **no**    | |
+| 13 | event_vehicle_detection_fail    | **no**    | |
+| 14 | event_pedestrian_detection      | **no**    | |
+| 15 | event_pedestrian_detection_fail | **no**    | |
+| 16 | event_lane_aware                | **no**    | |
+| 17 | event_lane_aware_fail           | **no**    | |
+| 18 | event_vehicle_following         | **no**    | |
+| 19 | event_lane_keeping              | **no**    | |
+| 20 | event_turning_left              | **no**    | |
+| 21 | event_turning_right             | **no**    | |
+| 22 | event_intersection              | **no**    | |
+| 23 | event_local_path                | **no**    | |
+| 24 | event_controller                | **no**    | |
+| 25 | event_start_calc_local_context  | yes       | |
+| 26 | event_transmit_local_context    | yes       | |
+| 27 | event_transmit_global_context   | yes       | |
+| 28 | event_task_pause_and_resume_carla | yes     | |
+| 29 | event_task_pause_carla          | yes       | |
+| 30 | event_new_timebase              | yes       | |
+| 31 | event_task_start                | yes       | |
+
+
 ## Citation and Reference
 If you find AD-TTS useful, please cite the paper:
 
