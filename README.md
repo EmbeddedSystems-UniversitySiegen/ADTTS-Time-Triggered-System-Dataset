@@ -145,9 +145,9 @@ In the simulation, a total of 32 event types are defined. Among them, 25 events 
 | 15 | event_pedestrian_detection_fail | **no**    | This event is triggered when the pedestrian detection module fails, which is often caused by the absence of camera data. |
 | 16 | event_lane_aware                | **no**    | This event is triggered when a lane is detected. It contains three attributes: "l_x", "l_y", and "l_z", representing the waypoint coordinates of the detected lane’s center point. |
 | 17 | event_lane_aware_fail           | **no**    | This event is triggered when the lane detection module fails. Such failure may result either from the absence of image sensor data or from the inability to detect lane markings, which can occur, for example, when the computed region of interest (ROI) is incorrect or when lane markings are missing, such as in the middle of an intersection. |
-| 18 | event_vehicle_following         | **no**    | |
-| 19 | event_lane_keeping              | **no**    | |
-| 20 | event_turning_left              | **no**    | |
+| 18 | event_vehicle_following         | **no**    | 决策模块会基于车辆检查任务、行人检测任务、交通灯检测任务、及ego自身信息（位置，速度和方向）对当前的车辆状态进行分类。如果当前车辆正在跟随其他车辆，那么该事件被触发。 |
+| 19 | event_lane_keeping              | **no**    | 如果车辆正在沿着空旷的道路行驶，那么该事件被触发。|
+| 20 | event_turning_left              | **no**    | 如果车辆正在超车|
 | 21 | event_turning_right             | **no**    | |
 | 22 | event_intersection              | **no**    | |
 | 23 | event_local_path                | **no**    | |
