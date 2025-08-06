@@ -150,15 +150,15 @@ In the simulation, a total of 32 event types are defined. Among them, 25 events 
 | 20 | event_turning_left              | **no**    | This event is triggered when the ego is making a left turn or overtaking from the left side. |
 | 21 | event_turning_right             | **no**    | This event is triggered when the ego is making a right turn or preparing to park on the right side. |
 | 22 | event_intersection              | **no**    | This event is triggered when the ego is passing through an intersection. |
-| 23 | event_local_path                | **no**    | |
-| 24 | event_controller                | **no**    | |
-| 25 | event_start_calc_local_context  | yes       | |
-| 26 | event_transmit_local_context    | yes       | |
-| 27 | event_transmit_global_context   | yes       | |
-| 28 | event_task_pause_and_resume_carla | yes     | |
-| 29 | event_task_pause_carla          | yes       | |
-| 30 | event_new_timebase              | yes       | |
-| 31 | event_task_start                | yes       | |
+| 23 | event_local_path                | **no**    | This event is triggered when the local path planning task computes a local path. |
+| 24 | event_controller                | **no**    | This event is triggered when the control task generates control signals. It includes three attributes: "throttle", "steer", and "brake". |
+| 25 | event_start_calc_local_context  | yes       | At the end of each task, all event vectors of the task are integrated to form the local context. This event is triggered when the computation of the local context begins. |
+| 26 | event_transmit_local_context    | yes       | After the local context has been computed, it is transmitted to the master node, at which point this event is triggered. |
+| 27 | event_start_calc_global_context | yes       | When the master node has received all local contexts, it merges them into a global context, at which point this event is triggered. |
+| 28 | event_transmit_global_context   | yes       | This event is triggered when the master node computes the global context and transmits it back to the other tasks. |
+| 29 | event_task_pause_and_resume_carla | yes     | This event is triggered when all tasks have been completed and the task clock is paused. It marks the end of a scheduling cycle. |
+| 30 | event_task_pause_carla          | yes       | This event is triggered after the CARLA rendering is completed, when the task clock resumes and a new cycle begins. It represents the start of a new scheduling cycle. |
+| 31 | event_new_timebase              | yes       | In our co-simulation, since the rendering time of CARLA is unpredictable, the scheduling timebase needs to be recalculated after the completion of each CARLA tick. This event is triggered at that point. It contains 1 attribute, "new_timebase", which denotes the new scheduling time base and also marks the start time of the first task (scheduled at time 0) in the subsequent scheduling cycle. |
 
 
 ## Citation and Reference
